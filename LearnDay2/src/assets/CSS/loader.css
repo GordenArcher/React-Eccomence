@@ -1,15 +1,14 @@
 .loader{
     position: relative;
-
 }
 
 .spinner{
     width: 100px;
     height: 100px;
     position: relative;
-    border: 1px solid red;
+    border: 1px solid blue;
     border-top: 1px solid rgb(242, 237, 237);
-    margin: 250px auto;
+    margin: 100px auto;
     border-radius: 50%;
     animation: spin .8s infinite;
     display: block;
