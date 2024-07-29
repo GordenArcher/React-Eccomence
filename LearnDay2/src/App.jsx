@@ -1,33 +1,49 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import { useState, useEffect } from 'react'
 import './App.css'
+import Loader from './components/loader'
+import ProductsData from './components/productsData'
 
 function App() {
-  const [count, setCount] = useState(0)
+
+  const [products, setProducts] = useState([])
+  const [showLoader, setShowLoader] = useState(true)
+
+  useEffect(() => {
+    fetch('https://betafullstack.pythonanywhere.com/products')
+    .then(res => {
+      if (!res.ok) {
+        throw new Error(`HTTP error! status: ${res.status}`)
+      }
+      return res.json()
+    })
+    .then(data => {
+      setProducts(data)
+      setShowLoader(false)
+    }
+    )
+    .catch(error => console.error('Error:', error))
+  }, [])
 
   return (
     <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+    <div className="App">
+      <header className="App-header">
+        <h1>Product List</h1>
+        
+        <div>
+          {showLoader == true ? <Loader /> : null}
+          {!showLoader && (
+            <div className='itmes_rendered'>
+              {products.map(product => <ProductsData {...product} /> )}   
+            </div>
+          )} 
+        </div>
+      </header>
+    </div>
+
+
+    {/* <Loader />  */}
+    
     </>
   )
 }
